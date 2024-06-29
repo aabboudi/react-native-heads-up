@@ -1,19 +1,20 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 
 const { width, height } = Dimensions.get('window');
 const vh = height / 100;
 const vw = width / 100;
 
-export default Card = ({ title, content, onPress, style }) => {
+export default Card = ({ title, content, icon, onPress, style }) => {
   const textColor = 'white';
 
   return (
     <TouchableOpacity style={[styles.card, style]} onPress={onPress} activeOpacity={0.75}>
       <View style={styles.cardContent}>
         <View style={styles.textContent}>
-          {title && <Text style={styles.horizontalTitle}>{title}</Text>}
-          {content && <Text style={styles.desc}>{content}</Text>}
+          {icon && <Text style={styles.horizontalTitle}><FontAwesome6 name={icon} size={50} color="white" /></Text>}
+          {content && <Text style={styles.desc}>{content} {title}</Text>}
         </View>
       </View>
     </TouchableOpacity>
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
     maxWidth: 50 * vw,
     height: 40 * vw,
     padding: .5 * vh,
-    backgroundColor: '#004F98',
+    backgroundColor: '#3a9ad9',
     borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
