@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#fff',
     textAlign: 'center',
+    marginTop: 8,
   },
   textContent: {
     flex: 1,

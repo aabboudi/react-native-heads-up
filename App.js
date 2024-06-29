@@ -16,7 +16,7 @@ export default function App() {
         <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: true }} />
         <Stack.Screen name="Game" component={GameScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
-      <StatusBar style="auto" hidden />
+      <StatusBar style="light" hidden />
     </NavigationContainer>
 
   );

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, ScrollView } from 'react-native';
+import { Text, View, ScrollView, Link, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import * as ScreenOrientation from 'expo-screen-orientation';
 import Card from '../components/Card';
 import styles from '../assets/styles/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -27,36 +26,16 @@ export default function HomeScreen() {
     checkAndSetRoundTime();
   }, []);
 
-  // useEffect(() => {
-  //   let isMounted = true;
-
-  //   async function lockScreenOrientation() {
-  //     if (isMounted) {
-  //       await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
-  //     }
-  //   }
-
-  //   lockScreenOrientation();
-
-  //   return () => {
-  //     isMounted = false;
-  //     async function unlockScreenOrientation() {
-  //       await ScreenOrientation.unlockAsync();
-  //     }
-  //     unlockScreenOrientation();
-  //   };
-  // }, []);
-
   return (
     <View style={styles.appContainer}>
       <Text style={styles.header}>HeadsUp</Text>
-      {/* <Card
-        title="Settings"
-        onPress={() => {
-          navigation.navigate('Settings');
-        }}
-      />
-      <FontAwesome6 name="gear" size={24} color="white" /> */}
+
+      <Pressable onPress={() => {navigation.navigate('Settings');}}>
+        <Text>
+          <FontAwesome6 name="gear" size={24} color="white" />
+        </Text>
+      </Pressable>
+
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.categoryContainer}>
         {categories.map((cat, index) => (
           <View key={index} style={styles.cardWrapper}>
@@ -70,6 +49,16 @@ export default function HomeScreen() {
             />
           </View>
         ))}
+        <View style={styles.cardWrapper}>
+          <Card
+            title=""
+            content="Random"
+            icon="shuffle"
+            onPress={() => {
+              navigation.navigate('Game', { gameContent: shuffleArray(categories.flatMap(category => category.content)) })
+            }}
+          />
+        </View>
       </ScrollView>
     </View>
   );

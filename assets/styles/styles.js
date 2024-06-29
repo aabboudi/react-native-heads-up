@@ -7,7 +7,6 @@ export default styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#0c2545',
     alignItems: 'center',
-    paddingVertical: 50,
     paddingHorizontal: 30,
   },
   container: {
@@ -17,7 +16,8 @@ export default styles = StyleSheet.create({
   header: {
     fontSize: 40,
     fontWeight: 'bold',
-    color: '#fff'
+    color: '#fff',
+    paddingVertical: 25,
   },
   text: {
     color: '#fff',
@@ -30,5 +30,34 @@ export default styles = StyleSheet.create({
   cardWrapper: {
     width: (screenWidth - 60) / 2,
     padding: 10,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+    alignItems: 'center',
+  },
+  modalText: {
+    fontSize: 18,
+    marginBottom: 20,
+  },
+  modalButton: {
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+    minWidth: 100,
+    alignItems: 'center',
+    backgroundColor: '#007AFF', // Example button color
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
   },
 });
