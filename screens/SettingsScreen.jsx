@@ -9,6 +9,7 @@ const SettingsScreen = () => {
   return (
     <View style={styles.appContainer}>
       <Text style={styles.header}>Settings</Text>
+      <Text style={styles.text}>Time per round</Text>
     </View>
   );
 };
