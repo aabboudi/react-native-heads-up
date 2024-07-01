@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Alert } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { DeviceMotion } from 'expo-sensors';
 import * as ScreenOrientation from 'expo-screen-orientation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const screen = Dimensions.get('window');
 const countdown = 3;
-const countround = 30;
+let countround = 300; // This will be updated with the stored value
 
 const getRemainingTime = (time) => ({
-  // min: Math.floor(time / 60),
   min: ('0' + Math.floor(time / 60)).slice(-2),
   sec: ('0' + time % 60).slice(-2)
 });
@@ -63,6 +63,22 @@ export default function Game() {
       }
       unlockScreenOrientation();
     };
+  }, []);
+
+  useEffect(() => {
+    const loadSettings = async () => {
+      try {
+        const savedMinutes = await AsyncStorage.getItem('@minutes');
+        const savedSeconds = await AsyncStorage.getItem('@seconds');
+        if (savedMinutes !== null && savedSeconds !== null) {
+          let countround = parseInt(savedMinutes) * 60 + parseInt(savedSeconds);
+        }
+      } catch (e) {
+        Alert.alert('Error', 'Failed to load settings.');
+      }
+    };
+
+    loadSettings();
   }, []);
 
   useEffect(() => {

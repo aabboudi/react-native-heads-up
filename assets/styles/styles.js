@@ -17,7 +17,8 @@ export default styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: 'bold',
     color: '#fff',
-    paddingVertical: 25,
+    paddingBottom: 25,
+    paddingTop: 60,
   },
   text: {
     color: '#fff',
@@ -31,6 +32,7 @@ export default styles = StyleSheet.create({
     width: (screenWidth - 60) / 2,
     padding: 10,
   },
+
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
