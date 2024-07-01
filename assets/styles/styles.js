@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -7,7 +7,7 @@ export default styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#0c2545',
     alignItems: 'center',
-    paddingHorizontal: 30,
+    paddingHorizontal: 10,
   },
   container: {
     alignItems: 'center',
@@ -18,7 +18,7 @@ export default styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#fff',
     paddingBottom: 25,
-    paddingTop: 60,
+    paddingTop: Platform.OS === 'ios' ? 60 : 30,
   },
   text: {
     color: '#fff',
@@ -29,7 +29,8 @@ export default styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   cardWrapper: {
-    width: (screenWidth - 60) / 2,
+    // width: (screenWidth - 60) / 2,
+    width: screenWidth / 2 - 10,
     padding: 10,
   },
 

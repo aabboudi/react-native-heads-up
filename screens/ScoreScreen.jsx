@@ -28,7 +28,7 @@ const ScoreScreen = () => {
 
   useEffect(() => {
     const backAction = () => {
-      return true; // Prevent default behavior
+      return true;
     };
 
     const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
@@ -43,30 +43,18 @@ const ScoreScreen = () => {
     });
   }, [navigation]);
 
-  // return (
-  //   <View style={styles.appContainer}>
-  //     <Text style={styles.header}>Final Score</Text>
-  //     <Button title="Go Back" onPress={() => navigation.navigate('Home')} />
-  //     <Text style={styles.header}>{trueCount}/{results.length}</Text>
-  //     <ScrollView contentContainerStyle={scoreSheet.answerView}>
-  //       {results.map((result, index) => (
-  //         <Text key={index} style={[styles.text, scoreSheet.answerTrue, !result.response && scoreSheet.answerFalse]}>{result.value}</Text>
-  //       ))}
-  //     </ScrollView>
-  //   </View>
-  // );
   return (
     <View style={{flex: 1, backgroundColor: '#0c2545'}}>
-    <ScrollView contentContainerStyle={styles.appContainer}>
-      <Text style={styles.header}>Final Score</Text>
-      <Button title="Go Back" onPress={() => navigation.navigate('Home')} />
-      <Text style={styles.header}>{trueCount}/{results.length}</Text>
-      <View style={scoreSheet.answerView}>
-        {results.map((result, index) => (
-          <Text key={index} style={[styles.text, scoreSheet.answerTrue, !result.response && scoreSheet.answerFalse]}>{result.value}</Text>
-        ))}
-      </View>
-    </ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.container}>
+        <Text style={styles.header}>Final Score</Text>
+        <Button title="Go Back" onPress={() => navigation.navigate('Home')} />
+        <Text style={styles.header}>{trueCount}/{results.length}</Text>
+        <View style={scoreSheet.answerView}>
+          {results.map((result, index) => (
+            <Text key={index} style={[styles.text, scoreSheet.answerTrue, !result.response && scoreSheet.answerFalse]}>{result.value}</Text>
+          ))}
+        </View>
+      </ScrollView>
     </View>
   );
 };

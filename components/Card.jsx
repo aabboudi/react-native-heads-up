@@ -7,7 +7,6 @@ const vh = height / 100;
 const vw = width / 100;
 
 export default Card = ({ title, content, icon, onPress, style }) => {
-  const textColor = 'white';
 
   return (
     <TouchableOpacity style={[styles.card, style]} onPress={onPress} activeOpacity={0.75}>
