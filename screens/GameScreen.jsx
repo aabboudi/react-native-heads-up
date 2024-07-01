@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Dimensions, Alert } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import { StyleSheet, Text, View, Dimensions, Alert, Button, BackHandler } from 'react-native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import { DeviceMotion } from 'expo-sensors';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const screen = Dimensions.get('window');
 const countdown = 3;
-let countround = 300; // This will be updated with the stored value
 
 const getRemainingTime = (time) => ({
   min: ('0' + Math.floor(time / 60)).slice(-2),
@@ -21,11 +20,14 @@ export default function Game() {
   const { min, sec } = getRemainingTime(remainingSec);
   const [gamma, setGamma] = useState(0);
   const [gameState, setGameState] = useState(0);
-  const [gameMsg, setMsg] = useState('Heads up!');
+  const [gameMsg, setMsg] = useState('Place on Forehead');
   const [index, setIndex] = useState(0);
   const [stater, setStater] = useState(-1);
   const [correctWords, setCorrect] = useState(0);
   const [passedWords, setPass] = useState(0);
+  const [countround, setCountround] = useState(60);
+  const [results, setResults] = useState([]); // State to store the results
+  const navigation = useNavigation();
 
   const route = useRoute();
   const { gameContent } = route.params;
@@ -71,7 +73,7 @@ export default function Game() {
         const savedMinutes = await AsyncStorage.getItem('@minutes');
         const savedSeconds = await AsyncStorage.getItem('@seconds');
         if (savedMinutes !== null && savedSeconds !== null) {
-          let countround = parseInt(savedMinutes) * 60 + parseInt(savedSeconds);
+          setCountround(parseInt(savedMinutes) * 60 + parseInt(savedSeconds));
         }
       } catch (e) {
         Alert.alert('Error', 'Failed to load settings.');
@@ -83,7 +85,7 @@ export default function Game() {
 
   useEffect(() => {
     if (gameState === 0) {
-      if (gamma > 1 && gamma < 2) {
+      if (gamma > .8 && gamma < 2.2) {
         setGameState(1);
         setRemainingSec(countdown);
         setIsActive(true);
@@ -93,9 +95,7 @@ export default function Game() {
       setRemainingSec(countround);
       setIsActive(true);
     } else if (gameState === 2 && remainingSec === 0) {
-      setGameState(3);
-      setIsActive(false);
-      setMsg(`Game Over!\nCorrect Words: ${correctWords}\nPassed Words: ${passedWords}`);
+      endGame();
     }
   }, [gameState, gamma, remainingSec]);
 
@@ -120,30 +120,65 @@ export default function Game() {
         setMsg("Correct!");
         setCorrect((words) => words + 1);
         setIndex((idx) => (idx >= gameContent.length - 1 ? 0 : idx + 1));
+        saveResult(gameContent[index], true);
       } else if (stater === 2) {
         setMsg("Pass!");
         setPass((words) => words + 1);
         setIndex((idx) => (idx >= gameContent.length - 1 ? 0 : idx + 1));
+        saveResult(gameContent[index], false);
       }
     }
   }, [stater]);
 
   useEffect(() => {
     if (gameState === 2) {
-      if (gamma > 1 && gamma < 2 && stater !== 0) {
+      if (gamma > .8 && gamma < 2.2 && stater !== 0) {
         setStater(0);
-      } else if (gamma > 2 && stater !== 1) {
+      } else if (gamma > 2.2 && stater !== 1) {
         setStater(1);
-      } else if (gamma < 1 && stater !== 2) {
+      } else if (gamma < .8 && stater !== 2) {
         setStater(2);
       }
     }
   }, [gamma, gameState]);
 
+  const saveResult = (value, response) => {
+    setResults((prevResults) => [...prevResults, { value, response }]);
+  };
+
+  const endGame = () => {
+    setGameState(3);
+    setIsActive(false);
+    setTimeout(() => {
+      setMsg(`Game Over!\nCorrect Words: ${correctWords}\nPassed Words: ${passedWords}`);
+      navigation.navigate('Score', { results });
+    }, 500); // Delay navigation by 0.5 seconds
+  };
+
+  useEffect(() => {
+    const backAction = () => {
+      return true; // Prevent default behavior
+    };
+
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () => backHandler.remove();
+  }, []);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => null,
+      gestureEnabled: false,
+    });
+  }, [navigation]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{`${gameMsg}`}</Text>
       <Text style={styles.textTimer}>{`${min}:${sec}`}</Text>
+      {gameState === 2 && (
+        <Button title="Finish" onPress={endGame} />
+      )}
     </View>
   );
 }
@@ -158,7 +193,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    fontSize: 35,
+    fontSize: 60,
+    fontWeight: 'bold',
     margin: 5,
     color: "#fff",
     textAlign: "center",

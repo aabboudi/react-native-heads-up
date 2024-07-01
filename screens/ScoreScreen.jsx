@@ -1,42 +1,72 @@
 import React, { useEffect } from 'react';
-import { Text, View, ScrollView, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { Text, View, ScrollView, StyleSheet, BackHandler, Button } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import styles from '../assets/styles/styles';
-
-const answers = [
-    {"name": "The Godfather", "value": false},
-    {"name": "The Shawshank Redemption", "value": true},
-    {"name": "The Godfather II", "value": true},
-    {"name": "Inception", "value": true},
-    {"name": "Fight Club", "value": false},
-    {"name": "The Dark Knight", "value": true},
-    {"name": "12 Angry Men", "value": true},
-    {"name": "Lord of the Rings", "value": true},
-    {"name": "The Matrix", "value": true},
-    {"name": "Seven", "value": true},
-    {"name": "Schindler's List", "value": true},
-    {"name": "Raging Bull", "value": false},
-    {"name": "Casablanca", "value": true},
-    {"name": "Citizen Kane", "value": true},
-    {"name": "Gone With The Wind", "value": true},
-    {"name": "The Wizard of Oz", "value": true},
-    {"name": "Lawrence of Arabia", "value": true}
-]
-
-const trueCount = answers.filter(answer => answer.value).length;
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 const ScoreScreen = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+  const { results } = route.params;
+  const trueCount = results.filter(result => result.response).length;
 
+  useEffect(() => {
+    const lockOrientation = async () => {
+      await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+    };
+
+    lockOrientation();
+
+    return () => {
+      const unlockOrientation = async () => {
+        await ScreenOrientation.unlockAsync();
+      };
+
+      unlockOrientation();
+    };
+  }, []);
+
+  useEffect(() => {
+    const backAction = () => {
+      return true; // Prevent default behavior
+    };
+
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () => backHandler.remove();
+  }, []);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => null,
+      gestureEnabled: false,
+    });
+  }, [navigation]);
+
+  // return (
+  //   <View style={styles.appContainer}>
+  //     <Text style={styles.header}>Final Score</Text>
+  //     <Button title="Go Back" onPress={() => navigation.navigate('Home')} />
+  //     <Text style={styles.header}>{trueCount}/{results.length}</Text>
+  //     <ScrollView contentContainerStyle={scoreSheet.answerView}>
+  //       {results.map((result, index) => (
+  //         <Text key={index} style={[styles.text, scoreSheet.answerTrue, !result.response && scoreSheet.answerFalse]}>{result.value}</Text>
+  //       ))}
+  //     </ScrollView>
+  //   </View>
+  // );
   return (
-    <View style={styles.appContainer}>
+    <View style={{flex: 1, backgroundColor: '#0c2545'}}>
+    <ScrollView contentContainerStyle={styles.appContainer}>
       <Text style={styles.header}>Final Score</Text>
-      <Text style={styles.header}>{trueCount}/{answers.length}</Text>
-      <ScrollView contentContainerStyle={scoreSheet.answerView}>
-        {answers.map((ans, index) => (
-            <Text key={index} style={[styles.text, scoreSheet.answerTrue, !ans.value && scoreSheet.answerFalse]}>{ans.name}</Text>
+      <Button title="Go Back" onPress={() => navigation.navigate('Home')} />
+      <Text style={styles.header}>{trueCount}/{results.length}</Text>
+      <View style={scoreSheet.answerView}>
+        {results.map((result, index) => (
+          <Text key={index} style={[styles.text, scoreSheet.answerTrue, !result.response && scoreSheet.answerFalse]}>{result.value}</Text>
         ))}
-      </ScrollView>
+      </View>
+    </ScrollView>
     </View>
   );
 };
@@ -44,17 +74,17 @@ const ScoreScreen = () => {
 export default ScoreScreen;
 
 const scoreSheet = StyleSheet.create({
-    answerView: {
-        flex: 1,
-        alignItems: 'center',
-    },
-    answerTrue: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginVertical: 10,
-    },
-    answerFalse: {
-        color: '#888',
-        textDecorationLine: 'line-through',
-    }
+  answerView: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  answerTrue: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginVertical: 10,
+  },
+  answerFalse: {
+    color: '#888',
+    textDecorationLine: 'line-through',
+  }
 });

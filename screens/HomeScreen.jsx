@@ -11,22 +11,6 @@ export default function HomeScreen() {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
 
-  // useEffect(() => {
-  //   const checkAndSetRoundTime = async () => {
-  //     try {
-  //       const roundTimeValue = await AsyncStorage.getItem('roundtime');
-  //       console.log(roundTimeValue); // REMOVE FUNCTION LATER
-  //       if (roundTimeValue !== null) {
-  //         await AsyncStorage.setItem('roundtime', '60');
-  //       }
-  //     } catch (error) {
-  //       console.error('Error accessing AsyncStorage:', error);
-  //     }
-  //   };
-
-  //   checkAndSetRoundTime();
-  // }, []);
-
   return (
     <View style={styles.appContainer}>
       <Text style={styles.header}>HeadsUp</Text>
