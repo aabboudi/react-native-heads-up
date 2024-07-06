@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image } from 'react-native';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 
 const { width, height } = Dimensions.get('window');
@@ -12,7 +12,11 @@ export default Card = ({ title, content, icon, onPress, style }) => {
     <TouchableOpacity style={[styles.card, style]} onPress={onPress} activeOpacity={0.75}>
       <View style={styles.cardContent}>
         <View style={styles.textContent}>
-          {icon && <Text style={styles.horizontalTitle}><FontAwesome6 name={icon} size={50} color="white" /></Text>}
+        {icon === 'ecdh' ? (
+            <Image source={require(`../assets/ecdh_logo.png`)} style={styles.icon} />
+          ) : (
+            icon && <Text style={styles.horizontalTitle}><FontAwesome6 name={icon} size={50} color="white" /></Text>
+          )}
           {content && <Text style={styles.desc}>{content} {title}</Text>}
         </View>
       </View>
@@ -50,11 +54,16 @@ const styles = StyleSheet.create({
   textContent: {
     flex: 1,
     margin: 1.2 * vh,
+    alignItems: 'center',
   },
   cardContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     flex: 1,
+  },
+  icon: {
+    height: 60,
+    width: 60,
   },
 });

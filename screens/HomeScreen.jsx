@@ -1,15 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, View, ScrollView, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Card from '../components/Card';
 import categories from '../assets/data/categories.json';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import styles from '../assets/styles/styles';
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 import CustomButton from '../components/Button';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const lockOrientation = async () => {
+      await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+    };
+
+    lockOrientation();
+
+    return () => {
+      const unlockOrientation = async () => {
+        await ScreenOrientation.unlockAsync();
+      };
+
+      unlockOrientation();
+    };
+  }, []);
 
   return (
     <View style={styles.appContainer}>

@@ -74,6 +74,8 @@ export default function Game() {
         const savedSeconds = await AsyncStorage.getItem('@seconds');
         if (savedMinutes !== null && savedSeconds !== null) {
           setCountround(parseInt(savedMinutes) * 60 + parseInt(savedSeconds));
+        } else {
+          setCountround(90);
         }
       } catch (e) {
         Alert.alert('Error', 'Failed to load settings.');
