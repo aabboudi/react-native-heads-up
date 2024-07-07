@@ -70,8 +70,8 @@ export default function Game() {
   useEffect(() => {
     const loadSettings = async () => {
       try {
-        const savedMinutes = await AsyncStorage.getItem('@minutes');
-        const savedSeconds = await AsyncStorage.getItem('@seconds');
+        const savedMinutes = await AsyncStorage.getItem('@minutes') || 0;
+        const savedSeconds = await AsyncStorage.getItem('@seconds') || 0;
         if (savedMinutes !== null && savedSeconds !== null) {
           setCountround(parseInt(savedMinutes) * 60 + parseInt(savedSeconds));
         } else {
