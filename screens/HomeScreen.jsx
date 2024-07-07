@@ -31,18 +31,20 @@ export default function HomeScreen() {
   return (
     <View style={styles.appContainer}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.container}>
-        <Text style={styles.header}>Anchita</Text>
+        <View style={{flexDirection: 'row', width: '100%', justifyContent: 'center', alignItems: 'center', position: 'relative'}}>
+          <Text style={styles.header}>Anchita</Text>
 
-        <Pressable
-          onPress={() => navigation.navigate('Settings')}
-          android_ripple={{ color: 'lightgrey' }}
-          style={({ pressed }) => [
-            styles.gearIcon,
-            { opacity: pressed ? 0.5 : 1 },
-          ]}
-        >
-          <FontAwesome6 name="gear" size={24} color="white" />
-        </Pressable>
+          <Pressable
+            onPress={() => navigation.navigate('Settings')}
+            android_ripple={{ color: 'lightgrey' }}
+            style={({ pressed }) => [
+              // styles.gearIcon,
+              { opacity: pressed ? 0.5 : 1 , position: 'absolute', right: 10, bottom: 37},
+            ]}
+          >
+            <FontAwesome6 name="gear" size={24} color="white" />
+          </Pressable>
+        </View>
 
         <View style={styles.categoryContainer}>
           {categories.map((cat, index) => (
