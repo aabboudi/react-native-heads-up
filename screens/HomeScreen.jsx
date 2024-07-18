@@ -7,8 +7,6 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import styles from '../assets/styles/styles';
 import * as ScreenOrientation from 'expo-screen-orientation';
 
-import CustomButton from '../components/Button';
-
 export default function HomeScreen() {
   const navigation = useNavigation();
 
@@ -38,7 +36,6 @@ export default function HomeScreen() {
             onPress={() => navigation.navigate('Settings')}
             android_ripple={{ color: 'lightgrey' }}
             style={({ pressed }) => [
-              // styles.gearIcon,
               { opacity: pressed ? 0.5 : 1 , position: 'absolute', right: 10, bottom: 37},
             ]}
           >

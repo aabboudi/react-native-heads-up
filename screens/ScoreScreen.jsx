@@ -1,14 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, ScrollView, StyleSheet, BackHandler, Button } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import styles from '../assets/styles/styles';
 import * as ScreenOrientation from 'expo-screen-orientation';
+import CustomButton from '../components/CustomButton';
 
 const ScoreScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { results } = route.params;
   const trueCount = results.filter(result => result.response).length;
+  const [isDisabled, setIsDisabled] = useState(false)
 
   useEffect(() => {
     const lockOrientation = async () => {
@@ -47,7 +49,11 @@ const ScoreScreen = () => {
     <View style={{flex: 1, backgroundColor: '#0c2545'}}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.container}>
         <Text style={styles.header}>Final Score</Text>
-        <Button title="Go Back" onPress={() => navigation.navigate('Home')} />
+        <CustomButton
+          title="Go Back"
+          disabled={isDisabled}
+          onPress={() => {navigation.navigate('Home'); setIsDisabled(true)}}
+        />
         <Text style={styles.header}>{trueCount}/{results.length}</Text>
         <View style={scoreSheet.answerView}>
           {results.map((result, index) => (

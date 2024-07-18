@@ -4,6 +4,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { DeviceMotion } from 'expo-sensors';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomButton from '../components/CustomButton';
 
 const screen = Dimensions.get('window');
 const countdown = 3;
@@ -28,6 +29,7 @@ export default function Game() {
   const [countround, setCountround] = useState(60);
   const [results, setResults] = useState([]); // State to store the results
   const navigation = useNavigation();
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const route = useRoute();
   const { gameContent } = route.params;
@@ -178,8 +180,12 @@ export default function Game() {
     <View style={styles.container}>
       <Text style={styles.text}>{`${gameMsg}`}</Text>
       <Text style={styles.textTimer}>{`${min}:${sec}`}</Text>
-      {gameState === 2 && (
-        <Button title="Finish" onPress={endGame} />
+      {(gameState === 2 || gameState === 3) && (
+        <CustomButton
+          title="Finish"
+          disabled={isDisabled}
+          onPress={() => {endGame(); setIsDisabled(true)}}
+        />
       )}
     </View>
   );
