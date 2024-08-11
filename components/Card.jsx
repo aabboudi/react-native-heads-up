@@ -12,11 +12,7 @@ export default Card = ({ title, content, icon, onPress, style }) => {
     <TouchableOpacity style={[styles.card, style]} onPress={onPress} activeOpacity={0.75}>
       <View style={styles.cardContent}>
         <View style={styles.textContent}>
-        {icon === 'ecdh' ? (
-            <Image source={require(`../assets/ecdh_logo.png`)} style={styles.icon} />
-          ) : (
-            icon && <Text style={styles.horizontalTitle}><FontAwesome6 name={icon} size={50} color="white" /></Text>
-          )}
+          {icon && <Text style={styles.horizontalTitle}><FontAwesome6 name={icon} size={50} color="white" /></Text>}
           {content && <Text style={styles.desc}>{content} {title}</Text>}
         </View>
       </View>

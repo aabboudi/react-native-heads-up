@@ -34,6 +34,7 @@ export default function Game() {
   const route = useRoute();
   const { gameContent } = route.params;
 
+  // How long the answer feedback message lasts on the screen
   useEffect(() => {
     const subscription = DeviceMotion.addListener((motionData) => {
       if (motionData.rotation) {
@@ -42,13 +43,14 @@ export default function Game() {
       }
     });
 
-    DeviceMotion.setUpdateInterval(50);
+    DeviceMotion.setUpdateInterval(500);
 
     return () => {
       subscription.remove();
     };
   }, []);
 
+  // Locks device orienation to landscape
   useEffect(() => {
     let isMounted = true;
 
@@ -69,6 +71,7 @@ export default function Game() {
     };
   }, []);
 
+  // Loads async settings if available
   useEffect(() => {
     const loadSettings = async () => {
       try {
